@@ -8,6 +8,7 @@ while n != -1:
     print('2. 일정추가')
     print('3. 일정확인')
     print('4. 일정삭제')
+    print('5. 전체일정확인')
 
     n = int(input( 'Choose the option please. (EXIT=-1): '))
 
@@ -34,11 +35,12 @@ while n != -1:
     if n==2:
         curs.execute('create table if not exists Calendar (date, value) ')
 
-        date=input('날짜를 입력하세요 : ')
+        date=input('날짜를 입력하세요(ex.2000 01 01) : ')
         value=input('일정을 입력하세요 : ')
         schedule=[date, value]
 
         curs.execute('insert into Calendar values(?, ?)', schedule)
+        print('일정이 추가되었습니다.\n')
 
         conn.commit()
         conn.close
@@ -46,24 +48,39 @@ while n != -1:
     if n==3:
         search=input('일정을 확인하고 싶은 날짜를 입력해주세요(ex.2000 01 01) : ')
         sql="select * from Calendar where date='{}'". format(search)
+        curs.execute(sql)
         rows=curs.fetchall()
         for row in rows:
             print(row)
+            
+        print('\n')
 
     if n==4:
         search=input('일정을 확인하고 싶은 날짜를 입력해주세요(ex.2000 01 01) : ')
-        sql1="select * from Calendar where date='{}'". format(search)
+        sql="select * from Calendar where date='{}'". format(search)
+        curs.execute(sql)
         rows=curs.fetchall()
         for row in rows:
             print(row)
         
+        print('\n')
+
         delete=input('삭제하고 싶은 일정의 내용을 입력해주세요 : ')
         sql2="delete from Calendar where value= '{}'". format(delete)
         curs.execute(sql2)
+        
+        print('삭제가 완료되었습니다.\n')
 
         conn.commit()
         conn.close
 
+    if n==5:
+        curs.execute('select * from Calendar')
+        rows=curs.fetchall()
+        for row in rows:
+            print(row)
+
+        print('\n')
 
 
 
