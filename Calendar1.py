@@ -77,6 +77,7 @@ while n != -1:
     if n==5:
         curs.execute('select * from Calendar')
         rows=curs.fetchall()
+        
         for row in rows:
             print(row)
 
